@@ -1,0 +1,20 @@
+{
+  "controls": [
+    {
+      "type": "textbox",
+      "label": "First Name",
+      "name": "firstName"
+    },
+    {
+      "type": "textbox",
+      "label": "Last Name",
+      "name": "lastName"
+    },
+    {
+      "type": "dropdown",
+      "label": "Country",
+      "name": "country",
+      "options": [ "India", "USA", "UK" ]
+    }
+  ]
+}

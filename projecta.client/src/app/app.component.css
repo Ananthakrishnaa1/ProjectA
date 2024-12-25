@@ -1,14 +1,61 @@
-﻿:host {
-    max-width: 1280px;
-    padding: 2rem;
-    text-align: center;
+﻿General Styles
+body {
+  font-family: Arial, sans-serif;
+  padding: 20px;
 }
 
-th, td {
-    padding-left: 1rem;
-    padding-right: 1rem;
+h1 {
+  color: #4CAF50;
 }
 
+/* Table Styles */
 table {
-    margin: 0 auto;
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+thead th {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px;
+}
+
+tbody td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+/* Container Styles */
+.ng-container {
+  margin-bottom: 15px;
+}
+
+.form-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  /* 16px gap between items */
+}
+
+.form-item {
+  flex: 1 1 200px;
+  /* Flexible item width with a minimum size */
+  display: flex;
+  justify-content: center;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 600px) {
+  .form-container {
+    flex-direction: column;
+  }
+
+  .form-item {
+    margin-bottom: 16px;
+  }
 }

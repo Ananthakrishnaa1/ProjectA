@@ -1,24 +1,45 @@
-﻿<h1 id="tableLabel">Weather forecast</h1>
+<h1>Layout</h1>
+<div class="form-container">
+  <div *ngFor="let control of controls" class="form-item">
+    <ng-container [ngSwitch]="control.type">
+      <ng-container *ngSwitchCase="'textbox'">
+        <mat-form-field>
+          <mat-label>{{ control.label }}</mat-label>
+          <input matInput [formControlName]="control.name" />
+        </mat-form-field>
+      </ng-container>
+      <ng-container *ngSwitchCase="'dropdown'">
+        <mat-form-field>
+          <mat-label>{{ control.label }}</mat-label>
+          <mat-select [formControlName]="control.name">
+            <mat-option *ngFor="let option of control.options" [value]="option">{{ option }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>
 
-<p>This component demonstrates fetching data from the server.</p>
 
-<p *ngIf="!forecasts"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
+<h1 id="tableLabel">Weather forecast</h1>
 
-<table *ngIf="forecasts">
-    <thead>
-        <tr>
-            <th>Date</th>
-            <th>Temp. (C)</th>
-            <th>Temp. (F)</th>
-            <th>Summary</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let forecast of forecasts">
-            <td>{{ forecast.date }}</td>
-            <td>{{ forecast.temperatureC }}</td>
-            <td>{{ forecast.temperatureF }}</td>
-            <td>{{ forecast.summary }}</td>
-        </tr>
-    </tbody>
+<table *ngIf="forecasts" class="forecast-table">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Temp. (C)</th>
+      <th>Temp. (F)</th>
+      <th>Summary</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let forecast of forecasts">
+      <td>{{ forecast.date }}</td>
+      <td>{{ forecast.temperatureC }}</td>
+      <td>{{ forecast.temperatureF }}</td>
+      <td>{{ forecast.summary }}</td>
+    </tr>
+  </tbody>
 </table>
+
+

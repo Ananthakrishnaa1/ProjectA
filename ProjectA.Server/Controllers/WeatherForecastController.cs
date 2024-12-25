@@ -18,8 +18,8 @@ namespace ProjectA.Server.Controllers
             _logger = logger;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        [HttpGet("GetWeatherForecast")]
+        public IEnumerable<WeatherForecast> GetWeatherForecast()
         {
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
@@ -29,5 +29,13 @@ namespace ProjectA.Server.Controllers
             })
             .ToArray();
         }
+
+        [HttpGet("GetLayout")]
+        public IActionResult GetLayout()
+        { 
+            var template = System.IO.File.ReadAllText("schema.json");
+            return Ok(template); 
+        }
+
     }
 }
