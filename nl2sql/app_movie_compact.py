@@ -1,4 +1,5 @@
 import streamlit as st
+import pandas as pd
 import sqlite3
 import google.generativeai as genai
 from configparser import ConfigParser
@@ -36,14 +37,20 @@ prompt=[
 
 ## Function to retrieve query from the database
 def read_sql_query(sql,db):
-    conn=sqlite3.connect(db)
-    cur=conn.cursor()
+    conn = sqlite3.connect(db)
+    cur = conn.cursor()
     cur.execute(sql)
-    rows=cur.fetchall()
+    rows = cur.fetchall()
+    column_names = [description[0] for description in cur.description]
     conn.commit()
     conn.close()
+    
+    # Add column names as the first row
+    rows.insert(0, column_names)
+    
     for row in rows:
         print(row)
+    
     return rows
     
 ## Function To Load Google Gemini Model and provide queries as response
@@ -66,7 +73,9 @@ if submit:
     response=get_gemini_response(question,prompt)
     print(response)
     response=read_sql_query(response,"movie.db")
-    st.subheader("The Response is")
-    for row in response:
-        print(row)
-        st.header(row)
+    st.subheader("Results:")
+    data = []
+    # Convert the data to a DataFrame
+    df = pd.DataFrame(response[1:], columns=response[0])
+    # Display the DataFrame as a table in Streamlit
+    st.table(df)
