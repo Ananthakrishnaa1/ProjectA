@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 interface WeatherForecast {
@@ -19,10 +19,12 @@ export class AppComponent implements OnInit {
   public forecasts: WeatherForecast[] = [];
   controls: any[] = [];
   form: FormGroup;
+  showControls!:boolean;
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient
+    private http: HttpClient,
+    private cdf:ChangeDetectorRef
   )
   {
     this.form = this.fb.group({});
@@ -33,10 +35,14 @@ export class AppComponent implements OnInit {
     this.getLayout();
   }
 
+  ngAfterViewInit() {
+  }
+
   getForecasts() {
     this.http.get<WeatherForecast[]>('/weatherforecast/GetWeatherForecast').subscribe({
       next: (result) => {
         this.forecasts = result;
+        this.cdf.detectChanges();
       },
       error: (error) => {
         console.error(error);
@@ -54,6 +60,9 @@ export class AppComponent implements OnInit {
         this.controls.forEach(control =>
           { this.form.addControl(control.name, new FormControl('')); }
         );
+        console.log(this.controls);
+        this.showControls = true;
+        this.cdf.detectChanges();
       },
       error: (error) => {
         console.error(error);

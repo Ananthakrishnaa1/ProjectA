@@ -11,6 +11,16 @@
       "name": "lastName"
     },
     {
+      "type": "date",
+      "label": "Date",
+      "name": "DOB"
+    },
+    {
+      "type": "checkbox",
+      "label": "Active",
+      "name": "active"
+    },
+    {
       "type": "dropdown",
       "label": "Country",
       "name": "country",

@@ -1,22 +1,63 @@
+<mat-toolbar color="primary">
+  <span>Project A</span>
+  <span class="example-spacer"></span>
+  <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+    <mat-icon>favorite</mat-icon>
+  </button>
+  <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+    <mat-icon>share</mat-icon>
+  </button>
+</mat-toolbar>
+
+
+<div style="margin: 16px;">
 <h1>Layout</h1>
-<div class="form-container">
-  <div *ngFor="let control of controls" class="form-item">
-    <ng-container [ngSwitch]="control.type">
-      <ng-container *ngSwitchCase="'textbox'">
-        <mat-form-field>
-          <mat-label>{{ control.label }}</mat-label>
-          <input matInput [formControlName]="control.name" />
-        </mat-form-field>
-      </ng-container>
-      <ng-container *ngSwitchCase="'dropdown'">
-        <mat-form-field>
-          <mat-label>{{ control.label }}</mat-label>
-          <mat-select [formControlName]="control.name">
-            <mat-option *ngFor="let option of control.options" [value]="option">{{ option }}</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </ng-container>
-    </ng-container>
+<div class="example-container" *ngIf="showControls">
+  <div class="example-form-fields">
+    <form [formGroup]="form">
+      <div class="example-container">
+        <div class="example-form-fields">
+          <ng-container *ngFor="let control of controls">
+            <ng-container [ngSwitch]="control.type">
+              <ng-container *ngSwitchCase="'textbox'">
+                <mat-form-field>
+                  <mat-label>{{ control.label }}</mat-label>
+                  <input matInput [formControlName]="control.name" />
+                </mat-form-field>
+              </ng-container>
+              <ng-container *ngSwitchCase="'dropdown'">
+                <mat-form-field>
+                  <mat-label>{{ control.label }}</mat-label>
+                  <mat-select [formControlName]="control.name">
+                    <mat-option *ngFor="let option of control.options" [value]="option">{{ option }}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </ng-container>
+              <ng-container *ngSwitchCase="'date'">
+                <mat-form-field>
+                  <mat-label>{{ control.label }}</mat-label>
+                  <input matInput [formControlName]="control.name" [matDatepicker]="picker" />
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </ng-container>
+              <ng-container *ngSwitchCase="'checkbox'">
+                <mat-checkbox [formControlName]="control.name">{{ control.label }}</mat-checkbox>
+              </ng-container>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="example-button-row">
+    <div class="example-flex-container">
+      <div class="example-button-container">
+        <button mat-fab aria-label="Example icon button with a delete icon">
+          <mat-icon>save</mat-icon>
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -41,5 +82,6 @@
     </tr>
   </tbody>
 </table>
+</div>
 
 
