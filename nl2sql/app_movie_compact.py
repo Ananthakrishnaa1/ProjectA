@@ -2,9 +2,11 @@ import streamlit as st
 import pandas as pd
 import sqlite3
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_google_genai.chat_models import ChatGoogleGenerativeAIError
 from configparser import ConfigParser
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
+from langchain.globals import set_verbose
 from dotenv import load_dotenv
 
 # Read API key from config file
@@ -31,6 +33,10 @@ Example 2 - Tell me all the movies in Marvel Universe?,
 the SQL command will be something like this SELECT * FROM MOVIE 
 where Universe="Marvel"; 
 
+If user asks a question out of context,the output should be a generic message
+Example 3 - How many planets in the solar system?,
+the output should be "Sorry, I can't help with that."
+
 also the sql code should not have ``` 
 in beginning or end and sql word in output
 
@@ -55,14 +61,32 @@ def read_sql_query(sql,db):
         print(row)
     
     return rows
+
+## Function to validate the question
+def validate_question(question):
+    keywords = ["movie", "movies", "film", "films", "cinema", "revenue", "year", "universe", "Marvel", "DC"]
+    if any(keyword.lower() in question.lower() for keyword in keywords):
+        return True
+    return
     
 ## Function To Load Google Gemini Model and provide queries as response
 def get_gemini_response(question,template):
+    set_verbose(True) #more details about output
     prompt = PromptTemplate.from_template(template)
     chain = LLMChain(llm=llm, prompt=prompt)
-    response = chain.run(question=question)
-    print(response)
-    return response
+    try:
+        response = chain.invoke({
+        "input_language": "English",
+        "output_language": "English",
+        'question' : question
+        })
+        return response['text']
+    except ChatGoogleGenerativeAIError as e:
+        print(f"An error occurred: {e}")
+        return e
+    except Exception as e:
+        print(f"An unexpected error occurred: {e}")
+        return e
 
 ## Streamlit App
 st.set_page_config(page_title="Movie Database App",page_icon="🎬",layout="wide")
@@ -75,12 +99,17 @@ submit=st.button("Get Results ->")
 
 # if submit is clicked
 if submit:
-    response=get_gemini_response(question,template)
-    print(response)
-    response=read_sql_query(response,"movie.db")
-    st.subheader("Results:")
-    data = []
-    # Convert the data to a DataFrame
-    df = pd.DataFrame(response[1:], columns=response[0])
-    # Display the DataFrame as a table in Streamlit
-    st.table(df)
+ if validate_question(question):
+    response = get_gemini_response(question, template)
+    if isinstance(response, Exception):
+        st.error("An error occurred while processing your request. Please try again.")
+    else:
+        response = read_sql_query(response, "movie.db")
+        st.subheader("Results:")
+        data = []
+        # Convert the data to a DataFrame
+        df = pd.DataFrame(response[1:], columns=response[0])
+        # Display the DataFrame as a table in Streamlit
+        st.table(df)
+ else:
+    st.error("Invalid question. Please ask a question related to the movie database.")
