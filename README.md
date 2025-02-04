@@ -1,3 +1,5 @@
+To run nl2sql proj
+
 install Python from the official website: https://www.python.org/downloads/
 get a gemini pro api key , create file config.ini and put your api key like below
 
