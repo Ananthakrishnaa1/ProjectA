@@ -8,6 +8,7 @@ from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from langchain.globals import set_verbose
 from dotenv import load_dotenv
+import re
 
 # Read API key from config file
 config = ConfigParser()
@@ -34,8 +35,12 @@ the SQL command will be something like this SELECT * FROM MOVIE
 where Universe="Marvel"; 
 
 If user asks a question out of context,the output should be a generic message
+For example,
 Example 3 - How many planets in the solar system?,
 the output should be "Sorry, I can't help with that."
+
+Example 4 - who is the producer of top grossing movie?,
+ since the database does not have producer column. the output should be "Sorry, I can't help with that."
 
 also the sql code should not have ``` 
 in beginning or end and sql word in output
@@ -68,6 +73,12 @@ def validate_question(question):
     if any(keyword.lower() in question.lower() for keyword in keywords):
         return True
     return
+
+## Function to validate the SQL query
+def is_valid_sql(query):
+    # Regular expression to match basic SQL commands
+    sql_regex = re.compile(r'^\s*(SELECT|INSERT|UPDATE|DELETE)\s+', re.IGNORECASE)
+    return bool(sql_regex.match(query))
     
 ## Function To Load Google Gemini Model and provide queries as response
 def get_gemini_response(question,template):
@@ -104,12 +115,17 @@ if submit:
     if isinstance(response, Exception):
         st.error("An error occurred while processing your request. Please try again.")
     else:
-        response = read_sql_query(response, "movie.db")
-        st.subheader("Results:")
-        data = []
-        # Convert the data to a DataFrame
-        df = pd.DataFrame(response[1:], columns=response[0])
-        # Display the DataFrame as a table in Streamlit
-        st.table(df)
+        print(response)
+        if is_valid_sql(response):
+         response = read_sql_query(response, "movie.db")
+         st.subheader("Results:")
+         data = []
+         # Convert the data to a DataFrame
+         df = pd.DataFrame(response[1:], columns=response[0])
+         # Display the DataFrame as a table in Streamlit
+         st.table(df)
+        else:
+         st.write(response)
+        
  else:
     st.error("Invalid question. Please ask a question related to the movie database.")
