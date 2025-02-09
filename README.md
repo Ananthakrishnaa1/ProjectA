@@ -1,5 +1,11 @@
 To run nl2sql proj
 
+Install Ollama: If you haven't already, download and install Ollama from the official website.
+
+run below in bash
+ollama pull deepseek-r1:1.5b
+
+
 install Python from the official website: https://www.python.org/downloads/
 get a gemini pro api key , create file config.ini and put your api key like below
 
