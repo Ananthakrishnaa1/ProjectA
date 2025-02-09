@@ -24,7 +24,8 @@ pip install -r requirements.txt
 streamlit run app_movie_compact.py
 
 
-![image](https://github.com/user-attachments/assets/ead5d605-0c9c-4d03-b2aa-df1fff6caabf)
+![image](https://github.com/user-attachments/assets/d5ea6236-36f9-490c-814b-db87ba0ed46b)
+
 
 
 ![image](https://github.com/user-attachments/assets/3eea925a-2c2c-41b6-8129-21f63769faa2)
