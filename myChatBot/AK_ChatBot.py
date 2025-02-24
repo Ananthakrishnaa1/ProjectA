@@ -50,7 +50,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 st.title("🚀 Offline ChatBot")
-st.caption("⚙️DeepSeek R1, LangChain, Ollama")
+st.caption("⚙️LLAMA, LangChain, Ollama")
 
 # Sidebar configuration
 # with st.sidebar:
@@ -71,8 +71,15 @@ st.caption("⚙️DeepSeek R1, LangChain, Ollama")
 
 # main code logic starts from hare
 # Initialize chat engine with selected model(Deepseek)
+# llm_engine = ChatOllama(
+#     model='deepseek-r1:1.5b',
+#     base_url="http://localhost:11434",
+#     temperature=0.3,
+#     streaming=True
+# )
+
 llm_engine = ChatOllama(
-    model='deepseek-r1:1.5b',
+    model='llama3.2',  # Changed from deepseek-r1:1.5b to llama2
     base_url="http://localhost:11434",
     temperature=0.3,
     streaming=True
@@ -82,7 +89,7 @@ llm_engine = ChatOllama(
 system_prompt = SystemMessagePromptTemplate.from_template(
     "You are an expert AI coding assistant integrated by Ananthakrishna. Provide concise, correct solutions and "
     "with strategic print statements for debugging. Always respond in English."
-    "If someone asks who integrated Offline ChatBot to this device ,You have to say You have been integrated by Ananthakrishna into this device using Deepseek R1, Langchain, Ollama and Streamlit and you can run on your local machine without Internet."
+    "If someone asks who integrated Offline ChatBot to this device ,You have to say You have been integrated by Ananthakrishna into this device using Llama, Langchain, Ollama and Streamlit and you can run on your local machine without Internet."
 )
 
 # Session state management
