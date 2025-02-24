@@ -3,7 +3,7 @@ To run nl2sql proj
 Install Ollama: If you haven't already, download and install Ollama from the official website.
 
 run below in bash
-ollama pull deepseek-r1:1.5b
+ollama run llama3.2
 
 
 install Python from the official website: https://www.python.org/downloads/
